@@ -1,0 +1,18 @@
+.button {
+  position: relative;
+  background-color: $c-gray--dark;
+  border: 4px solid $c-green;
+  text-align: center;
+  padding: 10px 42px;
+  font-size: 24px;
+  color: $c-green;
+  cursor: pointer;
+  //border-radius: 12px;
+  transition: box-shadow .4s ease, background-color .4s ease, color .4s ease;
+
+  &:hover{
+    box-shadow: 0 0 10px $c-green;
+    background-color: $c-green;
+    color: $c-gray--dark;
+  }
+}
