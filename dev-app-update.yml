@@ -1,3 +1,5 @@
-provider: generic
-url: https://example.com/auto-updates
-updaterCacheDirName: codepielauncher-updater
+provider: github
+private: true
+owner: BOPiotrWasielewski
+repo: CodePieLauncher
+token: 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

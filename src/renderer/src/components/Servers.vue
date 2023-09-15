@@ -18,7 +18,7 @@ export default {
     const servers = manifest.data.serverList
     for (let server of servers) {
       let res = await axios.get(
-        `https://mcapi.xdefcon.com/server/${server.server_ip}:${server.server_port}/full/json`
+          `https://mcapi.xdefcon.com/server/${server.server_ip}:${server.server_port}/full/json`
       )
       server['data'] = {
         id: server.id,
@@ -36,6 +36,11 @@ export default {
 
     return {
       servers
+    }
+  },
+  methods: {
+    updateServerList() {
+      location.reload(true)
     }
   }
 }
@@ -59,16 +64,32 @@ export default {
       :online="server.data.online"
       :modpackVersion="server.data.modpackVersion"
     />
+    <div class="serverList__update">
+      <button class="button" @click="updateServerList">
+        Odśwież
+      </button>
+    </div>
     <DownloadBar />
   </div>
 </template>
 
 <style scoped lang="scss">
+@import './../assets/css/variables';
+@import './../assets/css/buttons';
 .serverList {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 0 16px 32px 16px;
   position: relative;
+
+  &__update{
+    text-align: center;
+
+    button{
+      width: 100%;
+      background-color: $c-gray;
+    }
+  }
 }
 </style>

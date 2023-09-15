@@ -1,5 +1,17 @@
 <script>
 export default {
+  data(){
+    return {
+      version: null
+    }
+  },
+  async mounted() {
+    window.electron.ipcRenderer.invoke('get-version').then(res => {
+      if(res) this.version = res
+
+      console.log(this.version)
+    }).catch(err => console.error(err))
+  },
   methods: {
     minimizeWindow() {
       window.electron.ipcRenderer.send('minimize-app')
@@ -15,7 +27,9 @@ export default {
     <svg class="header__icon" viewBox="0 0 48 48" width="24" height="24">
       <use xlink:href="./assets/icons.svg#icon" />
     </svg>
-    <p>Pie Launcher</p>
+    <p>
+      Pie Launcher v{{ version }}
+    </p>
     <span class="header__minimize" @click="minimizeWindow">
       <svg viewBox="0 0 24 24" width="24" height="24">
         <use xlink:href="./assets/icons.svg#minimize" />

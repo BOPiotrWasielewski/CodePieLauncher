@@ -1,19 +1,11 @@
 {
   "name": "pielauncher",
-  "version": "0.0.1-beta",
+  "version": "0.1.0",
   "description": "Pie Launcher for Minecraft Pie Servers",
   "main": "./out/main/index.js",
   "author": "Piotr Wasielewski",
   "homepage": "https://codepie.pl",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BOPiotrWasielewski/CodePieLauncher.git"
-  },
-  "debug": {
-    "env": {
-      "GH_TOKEN": "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"
-    }
-  },
+  "repository": "https://github.com/BOPiotrWasielewski/CodePieLauncher",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",

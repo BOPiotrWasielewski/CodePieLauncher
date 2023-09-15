@@ -1,7 +1,8 @@
-appId: com.pielauncher.app
+appId: com.codepie.pielauncher
 productName: Pie Launcher
 directories:
   buildResources: build
+  output: dist/${version}
 files:
   - '!**/.vscode/*'
   - '!src/*'
@@ -23,5 +24,8 @@ nsis:
   createDesktopShortcut: always
 npmRebuild: false
 publish:
-  provider: generic
-  url: https://example.com/auto-updates
+  provider: github
+  private: true
+  owner: BOPiotrWasielewski
+  repo: CodePieLauncher
+  token: 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

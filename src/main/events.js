@@ -53,6 +53,9 @@ export const events = (app, win) => {
   ipcMain.on('update-download', async (event, title, current, total) => {
     event.reply('progress-update', title, current, total)
   })
+  ipcMain.handle('get-version', async (event) => {
+    return app.getVersion()
+  })
   ipcMain.handle('getRootPath', async (event, type) => {
     switch (type) {
       case 'root':
