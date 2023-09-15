@@ -1,8 +1,9 @@
 import { is } from '@electron-toolkit/utils'
 import path from 'path'
 const fs = require('fs')
+const { app } = require('electron')
 
-const execPath = path.dirname(process.execPath)
+const execPath = `${app.getPath('userData')}\\com.pielauncher.app`
 export const rootPath = is.dev ? `${execPath}\\test` : `${execPath}\\..`
 export const instancesPath = `${rootPath}/instances`
 export const downloadPath = `${rootPath}/download`

@@ -17,7 +17,7 @@ function createWindow() {
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : { icon }),
     webPreferences: {
-      devTools: false,
+      // devTools: false,
       webSecurity: false,
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -61,8 +61,8 @@ app.whenReady().then(() => {
   })
 
   const win = createWindow()
-  events(app, win)
   initializeLauncher()
+  events(app, win)
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

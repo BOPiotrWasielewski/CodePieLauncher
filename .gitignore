@@ -4,4 +4,5 @@ installer
 out
 .vscode
 .idea
+yarn.lock
 *.log*

@@ -13,7 +13,11 @@ asarUnpack:
 afterSign: build/notarize.js
 win:
   executableName: Pie Launcher
+  publish: github
 nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
@@ -38,5 +42,9 @@ appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
 publish:
-  provider: generic
-  url: https://example.com/auto-updates
+  provider: github
+  protocol: https
+  vPrefixedTagName: true
+  token: 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
+  private: true
+  releaseType: draft
