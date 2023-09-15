@@ -25,7 +25,5 @@ nsis:
 npmRebuild: false
 publish:
   provider: github
-  private: true
   owner: BOPiotrWasielewski
   repo: CodePieLauncher
-  token: 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
