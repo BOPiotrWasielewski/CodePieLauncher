@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { ipcMain, shell } from 'electron'
 import { v4 as uuidv4 } from 'uuid'
 import { downloadPath, instancesPath, rootPath } from './structure'
 const { YggdrasilClient } = require('@xmcl/user')
@@ -52,6 +52,12 @@ export const events = (app, win) => {
   })
   ipcMain.on('update-download', async (event, title, current, total) => {
     event.reply('progress-update', title, current, total)
+  })
+  ipcMain.on('open-instances-folder', async (event) => {
+    await shell.openPath(instancesPath);
+  })
+  ipcMain.on('open-downloads-folder', async (event) => {
+    await shell.openPath(downloadPath);
   })
   ipcMain.handle('get-version', async (event) => {
     return app.getVersion()

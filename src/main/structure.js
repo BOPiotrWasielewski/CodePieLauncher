@@ -3,10 +3,10 @@ import path from 'path'
 const fs = require('fs')
 const { app } = require('electron')
 
-const execPath = `${app.getPath('userData')}\\com.pielauncher.app`
+const execPath = `${app.getPath('userData')}`
 export const rootPath = is.dev ? `${execPath}\\test` : `${execPath}\\..`
-export const instancesPath = `${rootPath}/instances`
-export const downloadPath = `${rootPath}/download`
+export const instancesPath = `${rootPath}\\instances`
+export const downloadPath = `${rootPath}\\download`
 
 export const initializeLauncher = () => {
   if (!fs.existsSync(instancesPath)) {

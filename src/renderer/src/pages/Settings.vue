@@ -2,8 +2,9 @@
 import MemoryManager from '../components/MemoryManager.vue'
 import router from '../router'
 import JavaManager from '../components/JavaManager.vue'
+import SettingsButtons from '../components/SettingsButtons.vue'
 export default {
-  components: { JavaManager, MemoryManager },
+  components: { JavaManager, MemoryManager, SettingsButtons },
   methods: {
     back() {
       router.push('/panel')
@@ -34,6 +35,7 @@ export default {
       <Suspense>
         <JavaManager />
       </Suspense>
+      <SettingsButtons />
     </div>
   </div>
 </template>

@@ -91,8 +91,8 @@ export default {
       <img :src="icon ?? 'https://mc.codepie.pl/placeholder.webp'" :alt="title" />
     </div>
     <div class="singleServer__title">
+      <p>ID: {{ sid }}</p>
       <p>{{ ip }}</p>
-      <span>{{ description }}</span>
     </div>
     <div class="singleServer__type">
       {{ types[type] }}
