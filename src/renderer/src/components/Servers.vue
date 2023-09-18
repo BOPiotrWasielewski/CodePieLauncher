@@ -38,8 +38,19 @@ export default {
       servers
     }
   },
+  data() {
+    return {
+      onWait: true
+    }
+  },
+  mounted() {
+    window.electron.ipcRenderer.on('progress-update', (event, _title) => {
+      this.onWait = !(_title.length || _title.length > 0)
+    })
+  },
   methods: {
     updateServerList() {
+      if(!this.onWait) return;
       location.reload(true)
     }
   }
@@ -56,6 +67,7 @@ export default {
       :port="server.server_port"
       :type="server.server_type"
       :version="server.server_version"
+      :gameVersion="server.game_version ?? null"
       :description="server.data.description"
       :icon="server.data.icon"
       :maxPlayers="server.data.players.max"

@@ -5,6 +5,8 @@ const {
   getLoaderArtifactListFor,
   installTask,
   installFabric,
+  installForge,
+  getForgeVersionList,
   installDependenciesTask
 } = require('@xmcl/installer')
 const { MinecraftFolder, launch, Version } = require('@xmcl/core')
@@ -85,12 +87,30 @@ class Minecraft {
     } while (failed)
   }
 
-  async installFabric() {
+  async installFabric(gameVersion) {
     const _version = (await getLoaderArtifactListFor(this.version))[0]
 
     await installFabric(_version, this.instance)
     this.version = `${_version.intermediary.version}-fabric${_version.loader.version}`
   }
+
+  async installForge(gameVersion) {
+    let _version = {}
+    if(gameVersion && gameVersion.length > 0){
+      _version = {
+        version: gameVersion,
+        mcversion: this.version
+      }
+    } else{
+      _version = (await getForgeVersionList({
+        minecraft: this.version
+      })).versions[0]
+    }
+
+    await installForge(_version, this.instance)
+    this.version = `${_version.mcversion}-forge-${_version.version}`
+  }
+
   async installDependencies() {
     const _version = await Version.parse(this.instance, this.version)
     const installDependenciesLib = installDependenciesTask(_version, this.instance)
@@ -118,14 +138,26 @@ class Minecraft {
   }
   async extractModpack() {
     try {
+      this.prepareModpack();
       await decompress(
         `${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`,
         `${this.instance.root}`
       )
     } catch (err) {
-      console.error(err)
+      alert('extract modpack: '+err)
     }
   }
+
+  prepareModpack(){
+    try {
+      const rootPath = this.instance.getPath()
+      fs.rmSync(`${rootPath}/mods`, {recursive: true, force: true})
+      fs.rmSync(`${rootPath}/shaderpacks`, {recursive: true, force: true})
+    } catch (err){
+      alert('prepare modpack: '+err)
+    }
+  }
+
   async launch() {
     try {
       const proc = launch(this.getOptions())

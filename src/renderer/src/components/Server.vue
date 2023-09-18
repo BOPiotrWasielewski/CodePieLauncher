@@ -2,7 +2,7 @@
 import Minecraft from '../assets/js/Minecraft'
 import router from "../router";
 export default {
-  props: ['sid', 'ip', 'port', 'type', 'version', 'description', 'icon', 'maxPlayers', 'nowPlayers', 'title', 'online', 'modpackVersion'],
+  props: ['sid', 'ip', 'port', 'type', 'version', 'gameVersion', 'description', 'icon', 'maxPlayers', 'nowPlayers', 'title', 'online', 'modpackVersion'],
   setup() {
     const types = ['Vanilla', 'Forge', 'Fabric']
 
@@ -27,14 +27,10 @@ export default {
       if (!window.localStorage.getItem('localJavaPath')) {
         if (confirm('Nie zdefiniowano pliku wykonywalnego JAVA. Przejść do ustawień?')) {
           router.push('/settings')
-          return
         }
-      }
-
-      if (!this.online) {
-        alert('Nie można się podłączyć do wyłączonego serwera')
         return
       }
+
       if (!this.active) {
         alert('W trakcie łączenia z serwerem. Zakończ poprzednią grę zanim dołączysz do tego serwera')
         return
@@ -46,7 +42,7 @@ export default {
 
         await launcher.create(this.sid, this.version)
 
-        window.electron.ipcRenderer.send('update-download', 'Pobieranie instancji', 2, total)
+        window.electron.ipcRenderer.send('update-download', 'Instalacja minecraft', 2, total)
 
         switch (this.type) {
           default:
@@ -54,11 +50,26 @@ export default {
             await launcher.installVanilla()
             break
           case 1:
+            await launcher.installVanilla()
+            window.electron.ipcRenderer.send('update-download', 'Pobieranie Forge', 2, total)
+            await launcher.installForge(this.gameVersion)
+            window.electron.ipcRenderer.send('update-download', 'Pobieranie zależności', 3, total)
+            await launcher.installDependencies()
+            window.electron.ipcRenderer.send('update-download', 'Pobieranie modyfikacji', 4, total)
+            launcher.setModpackVersion(this.modpackVersion)
+            await launcher.installModpack(this.ip)
+            window.electron.ipcRenderer.send(
+              'update-download',
+              'Rozpakowywanie modyfikacji',
+              5,
+              total
+            )
+            await launcher.extractModpack()
             break
           case 2:
             await launcher.installVanilla()
             window.electron.ipcRenderer.send('update-download', 'Pobieranie Fabric', 2, total)
-            await launcher.installFabric()
+            await launcher.installFabric(this.gameVersion)
             window.electron.ipcRenderer.send('update-download', 'Pobieranie zależności', 3, total)
             await launcher.installDependencies()
             window.electron.ipcRenderer.send('update-download', 'Pobieranie modyfikacji', 4, total)
@@ -95,7 +106,8 @@ export default {
       <p>{{ ip }}</p>
     </div>
     <div class="singleServer__type">
-      {{ types[type] }}
+      <p>{{ types[type] }}</p>
+      <p>{{ version }}</p>
     </div>
     <div class="singleServer__players">
       {{ nowPlayers }} / {{ maxPlayers }}

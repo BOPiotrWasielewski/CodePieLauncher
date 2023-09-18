@@ -1,6 +1,6 @@
 {
   "name": "pielauncher",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "description": "Pie Launcher for Minecraft Pie Servers",
   "main": "./out/main/index.js",
   "author": "Piotr Wasielewski",
@@ -52,7 +52,6 @@
     "@vue/eslint-config-prettier": "^7.1.0",
     "electron": "^24.6.2",
     "electron-builder": "^23.6.0",
-    "electron-github-autoupdater": "^2.0.0",
     "electron-vite": "^1.0.25",
     "sass": "^1.66.1",
     "vite": "^4.4.2",
