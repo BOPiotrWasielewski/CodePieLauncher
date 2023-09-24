@@ -1,6 +1,6 @@
 {
   "name": "pielauncher",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Pie Launcher for Minecraft Pie Servers",
   "main": "./out/main/index.js",
   "author": "Piotr Wasielewski",

@@ -129,20 +129,29 @@ class Minecraft {
     } while (failed)
   }
   async installModpack(ip) {
+    if(window.localStorage.getItem(`${this.sid}-modpack`) === this.modpackVersion) return;
     if (!fs.existsSync(`${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`)) {
       await getModpack({
         url: `https://${ip}/clients/${this.sid}-latest.zip`,
         destination: `${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`
       })
+
+      window.localStorage.setItem(`${this.sid}-modpack`, `${this.modpackVersion}`)
     }
   }
   async extractModpack() {
     try {
+      if(window.localStorage.getItem(`${this.sid}+${this.modpackVersion}-decompress`) === '1') {
+        if(window.localStorage.getItem('allowArchive') !== 'true') this.removeModpackArchive()
+        return;
+      }
       this.prepareModpack();
       await decompress(
         `${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`,
         `${this.instance.root}`
       )
+      window.localStorage.setItem(`${this.sid}+${this.modpackVersion}-decompress`, '1')
+      if(window.localStorage.getItem('allowArchive') !== 'true') this.removeModpackArchive()
     } catch (err) {
       alert('extract modpack: '+err)
     }
@@ -155,6 +164,14 @@ class Minecraft {
       fs.rmSync(`${rootPath}/shaderpacks`, {recursive: true, force: true})
     } catch (err){
       alert('prepare modpack: '+err)
+    }
+  }
+
+  removeModpackArchive() {
+    try {
+      fs.unlinkSync(`${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`)
+    } catch (err){
+      alert('remove modpack archive: '+err)
     }
   }
 
