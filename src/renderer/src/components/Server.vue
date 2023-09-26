@@ -102,7 +102,7 @@ export default {
       <img :src="icon ?? 'https://mc.codepie.pl/placeholder.webp'" :alt="title" />
     </div>
     <div class="singleServer__title">
-      <p>ID: {{ sid }}</p>
+      <p>ID: {{ sid }} (v{{ modpackVersion }})</p>
       <p>{{ ip }}</p>
     </div>
     <div class="singleServer__type">

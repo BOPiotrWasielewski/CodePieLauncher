@@ -169,7 +169,9 @@ class Minecraft {
 
   removeModpackArchive() {
     try {
-      fs.unlinkSync(`${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`)
+      if(fs.existsSync(`${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`)){
+        fs.unlinkSync(`${this.downloadPath}/${this.sid}-${this.modpackVersion}.zip`)
+      }
     } catch (err){
       alert('remove modpack archive: '+err)
     }
