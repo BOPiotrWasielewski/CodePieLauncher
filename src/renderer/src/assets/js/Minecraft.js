@@ -7,7 +7,8 @@ const {
   installFabric,
   installForge,
   getForgeVersionList,
-  installDependenciesTask
+  installDependenciesTask,
+  installJreFromMojang
 } = require('@xmcl/installer')
 const { MinecraftFolder, launch, Version } = require('@xmcl/core')
 const { download: getModpack } = require('@xmcl/file-transfer')
@@ -88,7 +89,16 @@ class Minecraft {
   }
 
   async installFabric(gameVersion) {
-    const _version = (await getLoaderArtifactListFor(this.version))[0]
+    const versions = await getLoaderArtifactListFor(this.version)
+
+    let _version = {};
+    if(gameVersion && gameVersion.length > 0){
+      versions.forEach(version => {
+        if(version.loader.version === gameVersion) _version = version;
+      })
+    } else{
+      _version = versions[0]
+    }
 
     await installFabric(_version, this.instance)
     this.version = `${_version.intermediary.version}-fabric${_version.loader.version}`
@@ -186,6 +196,17 @@ class Minecraft {
       })
     } catch (err) {
       console.error(err)
+    }
+  }
+
+  removeInstance() {
+    window.localStorage.removeItem(`${this.sid}-modpack`);
+    window.localStorage.removeItem(`${this.sid}+${this.modpackVersion}-decompress`);
+
+    try {
+      fs.rmSync(`${this.instancePath}/${this.sid}`, {recursive: true, force: true})
+    } catch (err){
+      alert('remove modpack: '+err)
     }
   }
 }

@@ -64,6 +64,7 @@ export default {
       :key="server.id"
       :sid="server.id"
       :ip="server.server_ip"
+      :modpackName="server.title"
       :port="server.server_port"
       :type="server.server_type"
       :version="server.server_version"

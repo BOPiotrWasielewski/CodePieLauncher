@@ -2,7 +2,7 @@
 import Minecraft from '../assets/js/Minecraft'
 import router from "../router";
 export default {
-  props: ['sid', 'ip', 'port', 'type', 'version', 'gameVersion', 'description', 'icon', 'maxPlayers', 'nowPlayers', 'title', 'online', 'modpackVersion'],
+  props: ['sid', 'ip', 'modpackName', 'port', 'type', 'version', 'gameVersion', 'description', 'icon', 'maxPlayers', 'nowPlayers', 'title', 'online', 'modpackVersion'],
   setup() {
     const types = ['Vanilla', 'Forge', 'Fabric']
 
@@ -11,8 +11,10 @@ export default {
     }
   },
   data() {
+    let isExist = !!window.localStorage.getItem(`${this.sid}-modpack`);
     return {
-      active: true
+      active: true,
+      isExist
     }
   },
   mounted() {
@@ -91,19 +93,29 @@ export default {
         alert(err)
       }
       this.active = true
+    },
+    async remove(e){
+      e.preventDefault()
+      const launcher = new Minecraft()
+      await launcher.create(this.sid, this.version);
+      launcher.setModpackVersion(this.modpackVersion)
+      launcher.removeInstance()
+      alert(`Instancja ${this.modpackName} została usunięta`);
+      location.reload(true);
     }
   }
 }
 </script>
 
 <template>
-  <div class="singleServer">
+  <div :class="isExist ? 'singleServer singleServer--removable' : 'singleServer'">
     <div class="singleServer__icon">
       <img :src="icon ?? 'https://mc.codepie.pl/placeholder.webp'" :alt="title" />
     </div>
     <div class="singleServer__title">
+      <p>Nazwa: {{modpackName}}</p>
       <p>ID: {{ sid }} (v{{ modpackVersion }})</p>
-      <p>{{ ip }}</p>
+      <p>IP: {{ ip }}</p>
     </div>
     <div class="singleServer__type">
       <p>{{ types[type] }}</p>
@@ -123,6 +135,9 @@ export default {
         />
       </svg>
     </div>
+    <div v-if="isExist" class="singleServer__play" title="Usuń" @click="remove">
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"><path fill="#ffffff" d="M7 21q-.825 0-1.413-.588T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.588 1.413T17 21H7ZM17 6H7v13h10V6ZM9 17h2V8H9v9Zm4 0h2V8h-2v9ZM7 6v13V6Z"/></svg>
+    </div>
   </div>
 </template>
 
@@ -136,6 +151,11 @@ export default {
   padding: 8px;
   background-color: rgba($c-gray--dark, 0.4);
   transition: background-color 0.3s ease;
+
+  &--removable{
+    grid-template-columns: 70px 260px 1fr 1fr 20px 32px 32px;
+  }
+
   &:hover {
     background-color: rgba($c-gray--dark, 0.5);
   }

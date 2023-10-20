@@ -1,6 +1,6 @@
 import { ipcMain, shell } from 'electron'
 import { v4 as uuidv4 } from 'uuid'
-import { downloadPath, instancesPath, rootPath } from './structure'
+import {downloadPath, instancesPath, javaPath, rootPath} from './structure'
 const { YggdrasilClient } = require('@xmcl/user')
 
 const getMicrosoftToken = async () => {
@@ -8,9 +8,6 @@ const getMicrosoftToken = async () => {
   const authManager = new Auth('select_account')
   const xboxManager = await authManager.launch('electron')
   const token = await xboxManager.getMinecraft()
-
-  console.log(token.mclc())
-  console.log()
 
   return {
     logged_in: token.profile.name.length > 0,
@@ -71,6 +68,8 @@ export const events = (app, win) => {
         return instancesPath
       case 'download':
         return downloadPath
+      case 'java':
+        return javaPath
     }
   })
 }

@@ -32,7 +32,7 @@ export default {
       <button class="button" @click="changePath">Zmień</button>
       <input id="javapath" type="file" accept=".exe" @change="update($event)" />
     </div>
-    <p>Do działania wymagana jest JAVA w wersji JRE 8 lub JDE 17 (w zależności od systemu)</p>
+    <p>Do działania wymagana jest JAVA w wersji <a href="https://download.oracle.com/java/17/archive/jdk-17.0.9_windows-x64_bin.exe">JDE 17</a> (w zależności od systemu). Zainstaluj i wybierz plik javaw.exe</p>
   </div>
 </template>
 
@@ -42,6 +42,13 @@ export default {
 .javaManager {
   p {
     font-size: 12px;
+
+    a{
+      transition: color .3s ease;
+      &:hover{
+        color: $c-green;
+      }
+    }
   }
   &__input {
     display: flex;
